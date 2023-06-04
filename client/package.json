@@ -87,7 +87,7 @@
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
-    "@babel/runtime": "^7.20.13",
+    "@babel/runtime": "^7.22.3",
     "@tanstack/react-query-devtools": "^4.29.0",
     "@testing-library/dom": "^9.3.0",
     "@testing-library/jest-dom": "^5.16.5",
