@@ -14,7 +14,7 @@ const Content = React.memo(({ content }) => {
     [
       rehypeHighlight,
       {
-        detect: true,
+        detect: false,
         ignoreMissing: true,
         subset: langSubset
       }

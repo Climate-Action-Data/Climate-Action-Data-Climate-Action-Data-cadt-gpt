@@ -11,6 +11,7 @@ const handleError = (res, message) => {
 };
 
 const sendMessage = (res, message) => {
+  console.log("[handlers.js] sendMessage: ", message);
   if (message.length === 0) {
     return;
   }
@@ -32,11 +33,21 @@ const createOnProgress = ({ onProgress: _onProgress }) => {
     precode += chunk;
     tokens = tokens.replaceAll('[DONE]', '');
 
+    console.log("[handlers.js] chunk: ", chunk);
+    console.log("[handlers.js] tokens: ", tokens);
+    console.log("[handlers.js] precode: ", precode);
+
+    if (tokens.includes("[TO KNOWLEDGE]")) {
+      console.log("[handlers.js] Going to hide the [TO KNOWLEDGE]..");
+      tokens = `<div class="flex items-center text-xs rounded p-3 text-gray-900 bg-gray-100"><div><div class="flex items-center gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 shrink-0" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><div>Searching on Verra...</div></div></div><div class="ml-12 flex items-center gap-2" role="button"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="18 15 12 9 6 15"></polyline></svg></div></div>`;
+    }
+
     if (codeBlock) {
       code += chunk;
     }
 
     if (precode.includes('```') && codeBlock) {
+      console.log("Not in a code block, using HTML cursor");
       codeBlock = false;
       cursor = cursorDefault;
       precode = precode.replace(/```/g, '');
@@ -44,6 +55,7 @@ const createOnProgress = ({ onProgress: _onProgress }) => {
     }
 
     if (precode.includes('```') && code === '') {
+      console.log("In a code block, using traditional cursor");
       precode = precode.replace(/```/g, '');
       codeBlock = true;
       blockCount++;

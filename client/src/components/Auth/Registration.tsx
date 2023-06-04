@@ -5,6 +5,7 @@ import { useRegisterUserMutation, TRegisterUser } from '~/data-provider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import './Login.css'; // import the custom css
 
 function Registration() {
   const SERVER_URL = import.meta.env.DEV
@@ -41,7 +42,7 @@ function Registration() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white pt-6 sm:pt-0">
-      <div className="mt-6 w-96 overflow-hidden bg-white px-6 py-4 sm:max-w-md sm:rounded-lg">
+      <div className="homeBanner mt-6 w-96 overflow-hidden bg-white px-6 py-4 sm:max-w-md sm:rounded-lg">
         <h1 className="mb-4 text-center text-3xl font-semibold">Create your account</h1>
         {error && (
           <div

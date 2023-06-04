@@ -49,5 +49,19 @@
     "prettier-eslint": "^15.0.1",
     "prettier-eslint-cli": "^7.1.0",
     "prettier-plugin-tailwindcss": "^0.2.2"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.4.3",
+    "csv-writer": "^1.6.0",
+    "exceljs": "^4.3.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "mysql": "^2.18.1",
+    "openai": "^3.2.1",
+    "pdf-parse": "^1.1.1",
+    "puppeteer": "^20.5.0",
+    "react-icons": "^4.9.0",
+    "uuid": "^9.0.0"
   }
 }

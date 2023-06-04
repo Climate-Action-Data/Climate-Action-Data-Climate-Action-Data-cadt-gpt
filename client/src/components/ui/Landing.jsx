@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useDocumentTitle from '~/hooks/useDocumentTitle';
 import Templates from '../ui/Templates';
@@ -6,6 +6,7 @@ import SunIcon from '../svg/SunIcon';
 import LightningIcon from '../svg/LightningIcon';
 import CautionIcon from '../svg/CautionIcon';
 import ChatIcon from '../svg/ChatIcon';
+import { ThemeContext } from '~/hooks/ThemeContext';
 
 import store from '~/store';
 
@@ -14,6 +15,7 @@ export default function Landing() {
   const setText = useSetRecoilState(store.text);
   const conversation = useRecoilValue(store.conversation);
   const { title = 'New Chat' } = conversation || {};
+  const { theme, setTheme } = useContext(ThemeContext);
 
   useDocumentTitle(title);
 
@@ -30,7 +32,16 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto pt-0 text-sm dark:bg-gray-800">
+    <div className="flex h-full flex-col items-center overflow-y-auto pt-0 text-sm dark:bg-gray-800"
+    style={ theme === 'dark' ?{
+      backgroundImage: "url('https://climateactiondata.org/wp-content/uploads/2022/10/home-banner-2.jpg')",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+    } : {
+      /* No Background Image for light mode */
+    }}
+    >
       <div className="w-full px-6 text-gray-800 dark:text-gray-100 md:flex md:max-w-2xl md:flex-col lg:max-w-3xl">
         <h1
           id="landing-title"
@@ -49,19 +60,19 @@ export default function Landing() {
                 onClick={clickHandler}
                 className="w-full rounded-md bg-gray-50 p-3 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-gray-900"
               >
-                &quot;Explain quantum computing in simple terms&quot; →
+                &quot;Search for REDD+ Projects in Indonesia&quot; →
               </button>
               <button
                 onClick={clickHandler}
                 className="w-full rounded-md bg-gray-50 p-3 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-gray-900"
               >
-                &quot;Got any creative ideas for a 10 year old&apos;s birthday?&quot; →
+                &quot;Tell me more about Article 6 of the Paris Agreement&quot; →
               </button>
               <button
                 onClick={clickHandler}
                 className="w-full rounded-md bg-gray-50 p-3 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-gray-900"
               >
-                &quot;How do I make an HTTP request in Javascript?&quot; →
+                &quot;What is the CAD Trust?&quot; →
               </button>
             </ul>
           </div>
@@ -95,7 +106,7 @@ export default function Landing() {
                 May occasionally produce harmful instructions or biased content
               </li>
               <li className="w-full rounded-md bg-gray-50 p-3 dark:bg-white/5">
-                Limited knowledge of world and events after 2021
+                Limited knowledge of world events beyond carbon markets and climate change
               </li>
             </ul>
           </div>
@@ -111,8 +122,8 @@ export default function Landing() {
             </button>
           </div>
         )}
-        {!!showingTemplates && <Templates showTemplates={showTemplates}/>} */}
-        <div className="group h-32 w-full flex-shrink-0 dark:border-gray-900/50 dark:bg-gray-800 md:h-48" />
+        {!!showingTemplates && <Templates showTemplates={showTemplates}/>} 
+        <div className="group h-32 w-full flex-shrink-0 dark:border-gray-900/50 dark:bg-gray-800 md:h-48" />*/}
       </div>
     </div>
   );

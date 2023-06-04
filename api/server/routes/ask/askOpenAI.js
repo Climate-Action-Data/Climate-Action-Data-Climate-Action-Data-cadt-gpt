@@ -1,12 +1,14 @@
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
+const path = require('path');
 const addToCache = require('./addToCache');
 const { getOpenAIModels } = require('../endpoints');
 const { titleConvo, askClient } = require('../../../app/');
 const { saveMessage, getConvoTitle, saveConvo, getConvo } = require('../../../models');
 const { handleError, sendMessage, createOnProgress, handleText } = require('./handlers');
 const requireJwtAuth = require('../../../middleware/requireJwtAuth');
+const fs = require('fs');
 
 const abortControllers = new Map();
 
@@ -27,6 +29,7 @@ router.post('/abort', requireJwtAuth, async (req, res) => {
   res.send(JSON.stringify(ret));
 });
 
+// /ask/openAI Endpoint (Streaming)
 router.post('/', requireJwtAuth, async (req, res) => {
   const {
     endpoint,
@@ -52,11 +55,19 @@ router.post('/', requireJwtAuth, async (req, res) => {
     isCreatedByUser: true
   };
 
+
+  // Read the contents of the file into a string
+  console.log(__dirname);
+  console.log(process.cwd());
+  const promptPrefix = fs.readFileSync(path.join(process.cwd(), '/data/cad-trust-prompt.txt'), 'utf8');
+
+  console.log("CAD Trust Prompt", promptPrefix);
+
   // build endpoint option
   const endpointOption = {
     model: req.body?.model ?? 'gpt-3.5-turbo',
     chatGptLabel: req.body?.chatGptLabel ?? null,
-    promptPrefix: req.body?.promptPrefix ?? null,
+    promptPrefix: promptPrefix, //req.body?.promptPrefix ?? null,
     temperature: req.body?.temperature ?? 1,
     top_p: req.body?.top_p ?? 1,
     presence_penalty: req.body?.presence_penalty ?? 0,
@@ -118,12 +129,17 @@ const ask = async ({
     'X-Accel-Buffering': 'no'
   });
 
-  if (preSendRequest) sendMessage(res, { message: userMessage, created: true });
+  if (preSendRequest) {
+    console.log("Pre-sending request to client", userMessage);
+    sendMessage(res, { message: userMessage, created: true });
+  }
 
   try {
     let lastSavedTimestamp = 0;
     const { onProgress: progressCallback, getPartialText } = createOnProgress({
       onProgress: ({ text }) => {
+        console.log("[askOpenAI] onProgress: ", text);
+      
         const currentTimestamp = Date.now();
         if (currentTimestamp - lastSavedTimestamp > 500) {
           lastSavedTimestamp = currentTimestamp;
@@ -193,8 +209,8 @@ const ask = async ({
     const newUserMessageId = response.parentMessageId || userMessageId;
     const newResponseMessageId = response.messageId;
 
-    // STEP1 generate response message
     response.text = response.response || '**ChatGPT refused to answer.**';
+
 
     let responseMessage = {
       conversationId: newConversationId,

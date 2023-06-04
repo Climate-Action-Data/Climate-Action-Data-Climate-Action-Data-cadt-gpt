@@ -122,12 +122,11 @@ export default function NewConversationMenu() {
   });
 
   return (
-    <Dialog className="z-[100]">
-      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button
+    <Button
             id="new-conversation-menu"
             variant="outline"
+            disabled={true}
+            style={{ pointerEvents: "none" }}
             className={`group relative mb-[-12px] ml-0 mt-[-8px] items-center rounded-md border-0 p-1 outline-none focus:ring-0 focus:ring-offset-0 dark:data-[state=open]:bg-opacity-50 md:left-1 md:ml-[-12px] md:pl-1`}
           >
             {icon}
@@ -135,90 +134,5 @@ export default function NewConversationMenu() {
               New Topic
             </span>
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="min-w-[300px] dark:bg-gray-900 z-[100]"
-          onCloseAutoFocus={(event) => event.preventDefault()}
-        >
-          <DropdownMenuLabel
-            className="cursor-pointer dark:text-gray-300"
-            onClick={() => setShowEndpoints((prev) => !prev)}
-          >
-            {showEndpoints ? 'Hide ' : 'Show '} Endpoints
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup
-            value={endpoint}
-            onValueChange={onSelectEndpoint}
-            className="overflow-y-auto gap-1 flex flex-col"
-          >
-            {showEndpoints &&
-              (availableEndpoints.length ? (
-                <EndpointItems selectedEndpoint={endpoint} endpoints={availableEndpoints} onSelect={onSelectEndpoint} />
-              ) : (
-                <DropdownMenuLabel className="dark:text-gray-300">
-                  No endpoint available.
-                </DropdownMenuLabel>
-              ))}
-          </DropdownMenuRadioGroup>
-
-          <div className="mt-2 w-full" />
-
-          <DropdownMenuLabel className="flex items-center dark:text-gray-300">
-            <span className="cursor-pointer mr-auto " onClick={() => setShowPresets((prev) => !prev)}>
-              {showPresets ? 'Hide ' : 'Show '} Presets
-            </span>
-            <FileUpload onFileSelected={onFileSelected} />
-            <Dialog>
-              <DialogTrigger asChild>
-                <label
-                  htmlFor="file-upload"
-                  className="mr-1 flex h-[32px] h-auto cursor-pointer  items-center rounded bg-transparent px-2 py-1 text-xs font-medium font-normal text-gray-600 transition-colors hover:bg-slate-200 hover:text-red-700 dark:bg-transparent dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-green-500"
-                >
-                  {/* <Button
-                  type="button"
-                  className="h-auto bg-transparent px-2 py-1 text-xs font-medium font-normal text-red-700 hover:bg-slate-200 hover:text-red-700 dark:bg-transparent dark:text-red-400 dark:hover:bg-gray-800 dark:hover:text-red-400"
-                > */}
-                  <Trash2 className="mr-1 flex w-[22px] items-center stroke-1" />
-                  Clear All
-                  {/* </Button> */}
-                </label>
-              </DialogTrigger>
-              <DialogTemplate
-                title="Clear presets"
-                description="Are you sure you want to clear all presets? This is irreversible."
-                selection={{
-                  selectHandler: clearAllPresets,
-                  selectClasses: 'bg-red-600 hover:bg-red-700 dark:hover:bg-red-800 text-white',
-                  selectText: 'Clear'
-                }}
-              />
-            </Dialog>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup
-            onValueChange={onSelectPreset}
-            className={cn('overflow-y-auto', showEndpoints ? 'max-h-[180px]' : 'max-h-[315px]')}
-          >
-            {showPresets &&
-              (presets.length ? (
-                <PresetItems
-                  presets={presets}
-                  onSelect={onSelectPreset}
-                  onChangePreset={onChangePreset}
-                  onDeletePreset={onDeletePreset}
-                />
-              ) : (
-                <DropdownMenuLabel className="dark:text-gray-300">No preset yet.</DropdownMenuLabel>
-              ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <EditPresetDialog
-        open={presetModelVisible}
-        onOpenChange={setPresetModelVisible}
-        preset={preset}
-      />
-    </Dialog>
   );
 }
