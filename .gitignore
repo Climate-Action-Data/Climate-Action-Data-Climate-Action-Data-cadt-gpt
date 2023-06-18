@@ -50,7 +50,6 @@ bower_components/
 .npmrc
 .env
 cache.json
-api/data/
 owner.yml
 archive
 .vscode/settings.json
